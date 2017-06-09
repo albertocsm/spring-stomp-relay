@@ -24,7 +24,7 @@
         }
 
         function connect() {
-            var socket = new SockJS('/websocket');
+            var socket = new SockJS($('#wsEndpoint').val());
             stompClient = Stomp.over(socket);
             // stompClient.debug = () => {}; // this omits debug messages to console
             stompClient.connect(
@@ -68,11 +68,10 @@
             if (currentSubscription != null && currentSubscription.id != null) {
 
                 $.ajax({
-                    url : '/api/message',
+                    url : $('#restEndpoint').val(),
                     type : "POST",
                     data : JSON.stringify({
-                        'content' : message,
-                        'type' : 'INFO'
+                        'content' : message
                     }),
                     contentType : "application/json; charset=utf-8",
                     dataType : "json",
@@ -99,7 +98,16 @@
     </div>
     <div id="conversationDiv">
         <p>
-            <label>Post message: </label><input type="text" id="message" value="some default value"/>
+            <label>Websockets Listener Endpoint</label></br>
+            <input type="text" id="wsEndpoint"value="http://localhost:8080/websocket"/></br>
+            </br>
+
+            <label>Test Rest Endpoint</label></br>
+            <input type="text" id="restEndpoint"value="http://localhost:8080/statistics"/></br>
+            </br>
+
+            <label>Post message</label></br>
+            <input type="text" id="message" value="some default value"/>
             <button id="postMessage" onclick="postMessage();">Post</button>
         </p>
         <div id="messages"></div>
